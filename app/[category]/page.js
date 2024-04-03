@@ -1,9 +1,9 @@
 import Article from '@/components/Article'
 import Blog from '@/components/Blog'
-export const dynamicParams = false
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/category_page?filter[status][_eq]=published`,{ cache: 'no-cache' }).then((res) => res.json())
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/category_page?filter[status][_eq]=published`).then((res) => res.json())
     const categories = res.data
     return categories.map((category) => ({
         category: category.slug
@@ -12,13 +12,14 @@ export async function generateStaticParams() {
 
 
 async function getData({category}) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/category_page?filter[slug][_eq]=${category}&fields[]=*,articles.*,articles.category.*`,{ cache: 'no-cache' })
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/category_page?filter[slug][_eq]=${category}&fields[]=*,articles.*,articles.category.*`)
 
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
         throw new Error('Failed to fetch data')
     }
     const result = await res.json()
+    if (result.data.length < 1) notFound()
     return result.data[0]
 }
   

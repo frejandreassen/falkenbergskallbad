@@ -1,9 +1,8 @@
 import Article from '@/components/Article'
-import Blog from '@/components/Blog'
-export const dynamicParams = false
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/article_page?filter[status][_eq]=published&fields=[*,category.slug]`,{ cache: 'no-cache' }).then((res) => res.json())
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/article_page?filter[status][_eq]=published&fields[]=*,category.slug`,{ cache: 'no-cache' }).then((res) => res.json())
     const articles = res.data
     return articles.map((article) => ({
         category: article.category.slug,
@@ -20,6 +19,7 @@ async function getData({article}) {
         throw new Error('Failed to fetch data')
     }
     const result = await res.json()
+    if (result.data.length < 1) notFound()
     return result.data[0]
 }
   

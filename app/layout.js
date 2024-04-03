@@ -13,7 +13,7 @@ export default async function RootLayout({ children }) {
   const header = await getHeader()
   const footer = await getFooter()
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <head>
         <link 
           href='https://fonts.googleapis.com/css2?family=Bodoni+Moda&display=swap' 
@@ -24,7 +24,7 @@ export default async function RootLayout({ children }) {
           rel="stylesheet"  
         />
       </head>
-      <body className="bg-transparent dark:bg-black font-montserrat">
+      <body className="h-full bg-transparent dark:bg-black font-montserrat">
         <div className="bg-white text-gray-700">
           <Header navigation={header.navigation} logo={header.logo}/>
           {children}

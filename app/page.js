@@ -7,7 +7,7 @@ import Sponsors from "@/components/Sponsors";
 
 
 async function getData() {
-  const res = await fetch('https://cms.falkenbergskallbad.se/items/start_page',{ cache: 'no-cache' })
+  const res = await fetch('https://cms.falkenbergskallbad.se/items/start_page', { next: { revalidate: 60 } })
   if (!res.ok) {
     throw new Error('Failed to fetch data')
   }
@@ -15,7 +15,7 @@ async function getData() {
   return result.data
 }
 async function getArticles() {
-  const res = await fetch('https://cms.falkenbergskallbad.se/items/article_page?fields[]=*,category.*',{ cache: 'no-cache' })
+  const res = await fetch('https://cms.falkenbergskallbad.se/items/article_page?fields[]=*,category.*', { next: { revalidate: 60 } })
   if (!res.ok) {
     throw new Error('Failed to fetch data')
   }

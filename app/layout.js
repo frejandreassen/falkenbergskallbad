@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getFooter, getHeader } from "@/lib/actions";
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 
 
@@ -26,6 +27,7 @@ export default async function RootLayout({ children }) {
       </head>
       <body className="h-full bg-transparent dark:bg-black font-montserrat">
         <div className="bg-white text-gray-700">
+          <Analytics />
           <Header navigation={header.navigation} logo={header.logo}/>
           {children}
           <Footer navigation={footer.navigation} copyright_text={footer.copyright_text}/>

@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Föreningen Falkenbergs Kallbadsvänner Website
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This repository is home to the website for Föreningen Falkenbergs Kallbadsvänner, a non-profit organization dedicated to the maintenance and promotion of a public sauna located by the sea in Falkenberg. The website serves as a digital gateway for engaging the community and providing essential information about the sauna and the organization's activities.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Key Highlights
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Powered by Directus:** The website leverages Directus as a headless CMS, enabling dynamic content management and ensuring that the latest information about the sauna and the organization is readily available.
+- **Community Engagement:** Designed to foster community involvement, the website provides detailed information on how individuals can support or get involved with Föreningen Falkenbergs Kallbadsvänner.
+- **Essential Information:** Visitors can find comprehensive details about the sauna, including its history, mission of the organization, and contact information for inquiries or support.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Technology Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Frontend Framework:** Next.js 14, utilizing the new App Router for efficient page routing and optimization.
+- **CMS:** Directus, serving as a flexible, headless CMS that allows for easy content updates and management.
+- **Styling:** Tailwind CSS for a responsive and modern design approach.
+- **Deployment:** Google App Engine, chosen for its scalability and robustness to serve Next.js applications.
 
-## Learn More
+## Local Development
 
-To learn more about Next.js, take a look at the following resources:
+Follow these steps to set up the project locally:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository:
+`git clone <repository-url>`
+2. Navigate to the project directory:
+`cd <project-directory>`
+3. Install dependencies:
+`npm install`
+4. Start the development server:
+`npm run dev`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+You are welcome to hook up to our CMS by setting environment variable NEXT_PUBLIC_DIRECTUS_URL=https://cms.falkenbergskallbad.se
+Visit `http://localhost:3000` in your browser to see the application running in development mode.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+We welcome contributions from the community, whether it's in the form of bug reports, feature suggestions, or code contributions. Please feel free to open an issue or a pull request on this repository.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contact
+
+For further information or to get involved with the Föreningen Falkenbergs Kallbadsvänner, please don't hesitate to reach out to us at [frej.andreassen@gmail.com](frej.andreassen@gmail.com).

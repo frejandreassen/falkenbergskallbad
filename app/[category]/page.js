@@ -27,7 +27,7 @@ export default async function Page({ params }) {
     return (
         <div>
             <Article content={data.content} />
-            {(data.articles.length > 0) && <>
+            {(data.articles.length > 0) ? <>
                 <div className="relative">
                     <div className="absolute inset-0 flex items-center" aria-hidden="true">
                         <div className="w-full border-t border-gray-300" />
@@ -37,8 +37,8 @@ export default async function Page({ params }) {
                     </div>
                 </div>
                 <Blog articles={data.articles} title={data.title} description={data.description}/>
-            </>
-        }
+            </> : null
+            }
         </div>
     )
   }

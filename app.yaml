@@ -1,0 +1,7 @@
+env: standard
+service: falkenbergs-kallbad
+runtime: nodejs20
+handlers:
+  - url: /.*
+    secure: always
+    script: auto

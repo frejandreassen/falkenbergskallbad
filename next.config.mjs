@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['cms.falkenbergskallbad.se'],
-      }
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.falkenbergskallbad.se',
+        port: '',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

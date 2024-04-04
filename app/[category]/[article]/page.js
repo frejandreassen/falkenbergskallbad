@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 
 
 async function getData({article}) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/article_page?filter[slug][_eq]=${article}`, { next: { revalidate: 60 } })
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/article_page?filter[slug][_eq]=${article}`)
 
     if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary

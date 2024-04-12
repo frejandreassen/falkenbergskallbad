@@ -23,7 +23,7 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address."),
 });
 
-export default function Membership({startPage, assetUrl}) {
+export default function Membership({startPage, assetUrl, email}) {
   const [reference, setReference] = useState('')
   const [messageSent, setMessageSent] = useState(false);
   const form = useForm({
@@ -38,7 +38,8 @@ export default function Membership({startPage, assetUrl}) {
   async function onSubmit(values) {
     console.log(values);
     try {
-      // await sendEmail(email, values);
+      values.subject = "Ny medlem!"
+      await sendEmail(email, values);
       setMessageSent(true); // Set the message sent state to true on success
       setReference(values.firstName + ' ' + values.lastName)
     } catch (error) {
@@ -73,7 +74,7 @@ export default function Membership({startPage, assetUrl}) {
           <rect width="100%" height="100%" strokeWidth={0} fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
         </svg>
         <div className="mx-auto max-w-xl lg:max-w-4xl">
-          <h2 className="text-4xl font-bold tracking-tight text-gray-900">{startPage.membership_header}</h2>
+          <h2 className="text-3xl font-bodoni-moda font-bold tracking-tight text-gray-900">{startPage.membership_header}</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
           {startPage.membership_content}
           </p>

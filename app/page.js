@@ -44,7 +44,7 @@ export default async function Page() {
       
       <Hero startPage={startPage} assetUrl={assetUrl}/>
       {(startPage.include_faq) ? <FAQ faqs={startPage.faqs} header={startPage.faq_header}/> : null}
-      {(startPage.include_membership) ? <Membership startPage={startPage} assetUrl={assetUrl}/> : null}
+      {(startPage.include_membership) ? <Membership startPage={startPage} assetUrl={assetUrl} email={startPage.contact_email}/> : null}
       {(startPage.include_sponsors) ? <Sponsors header={startPage.sponsor_header} content={startPage.sponsor_content} logos={logos} assetUrl={assetUrl}/> : null }
       {(startPage.include_blog) ? <Blog articles={articles} header={startPage.blog_header} content={startPage.blog_content} category={startPage.blog_category}/> : null }
       {(startPage.include_contact) ? <Contact header={startPage.contact_header} content={startPage.contact_content} email={startPage.contact_email} /> : null }

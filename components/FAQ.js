@@ -2,26 +2,26 @@
 import { Disclosure } from '@headlessui/react'
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 
-const faqs = [
-  {
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  {
-    question: "What's the best thing about Switzerlanda?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  // More questions...
-]
+// const faqs = [
+//   {
+//     question: "What's the best thing about Switzerland?",
+//     answer:
+//       "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+//   },
+//   {
+//     question: "What's the best thing about Switzerlanda?",
+//     answer:
+//       "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+//   },
+//   // More questions...
+// ]
 
-export default function FAQ() {
+export default function FAQ({faqs, header}) {
   return (
     <div className="bg-white" id="faq">
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
         <div className="mx-auto max-w-4xl divide-y divide-gray-900/10">
-          <h2 className="text-3xl font-bodoni-moda leading-10 tracking-tight text-gray-900">Vanliga frågor och svar</h2>
+          <h2 className="text-3xl font-bodoni-moda leading-10 tracking-tight text-gray-900">{header}</h2>
           <dl className="mt-10 space-y-6 divide-y divide-gray-900/10">
             {faqs.map((faq) => (
               <Disclosure as="div" key={faq.question} className="pt-6">

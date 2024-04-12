@@ -32,7 +32,7 @@ export default async function RootLayout({ children }) {
           <SpeedInsights />
           <Header navigation={header.navigation} logo={header.logo}/>
           {children}
-          <Footer navigation={footer.navigation} copyright_text={footer.copyright_text}/>
+          <Footer navigation={footer.navigation} instagram={footer.instagram} facebook={footer.facebook} copyright_text={footer.copyright_text}/>
         </div>
       </body>
     </html>

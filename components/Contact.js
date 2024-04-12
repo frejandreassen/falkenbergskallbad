@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/Textarea"
+import { Textarea } from "@/components/ui/textarea"
 import { sendEmail } from '@/lib/actions';
 import { EnvelopeIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
 

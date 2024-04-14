@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { sendEmail } from '@/lib/actions';
+import { sendMembershipEmail } from '@/lib/actions';
 import Image from 'next/image';
 
 const formSchema = z.object({
@@ -24,7 +24,6 @@ const formSchema = z.object({
 });
 
 export default function Membership({startPage, assetUrl, email}) {
-  const [reference, setReference] = useState('')
   const [messageSent, setMessageSent] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -38,10 +37,8 @@ export default function Membership({startPage, assetUrl, email}) {
   async function onSubmit(values) {
     console.log(values);
     try {
-      values.subject = "Ny medlem!"
-      await sendEmail(email, values);
+      await sendMembershipEmail(email, values, startPage.membership_payment_info);
       setMessageSent(true); // Set the message sent state to true on success
-      setReference(values.firstName + ' ' + values.lastName)
     } catch (error) {
       console.error("Failed to send message:", error);
     }
@@ -121,7 +118,6 @@ export default function Membership({startPage, assetUrl, email}) {
                   <div>
                     <article className="prose prose-img:rounded-lg prose-headings:font-bodoni-moda">
                       <div dangerouslySetInnerHTML={{ __html: startPage.membership_payment_info }} />
-                      <p>Märk betalningen <strong>{reference}</strong></p>
                     </article>
                   </div>
                 )}

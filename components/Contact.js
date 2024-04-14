@@ -137,7 +137,7 @@ export default function Contact({header, content, email}) {
                         <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
                       </div>
                       <div className="ml-3">
-                        <p className="text-sm font-medium text-green-800">Tack för ditt meddelande!</p>
+                        <p className="text-sm font-medium text-green-800">Tack för ditt meddelande! Vi återkopplar så snart vi kan, oftast inom några dagar.</p>
                       </div>
                     </div>
                   </div>

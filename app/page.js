@@ -32,6 +32,19 @@ async function getArticles() {
   return result.data
 }
 
+export async function generateMetadata() { 
+  // fetch data
+  const pageData = await getData()
+ 
+  return {
+    title: pageData.title,
+    description: pageData.description,
+    openGraph: {
+      images: process.env.NEXT_PUBLIC_DIRECTUS_URL + '/assets/' + pageData.featured_image,
+    },
+  }
+}
+
 export default async function Page() {
 
   const startPage = await getData()

@@ -23,6 +23,20 @@ async function getData({category}) {
     return result.data[0]
 }
   
+
+export async function generateMetadata({ params }) { 
+    // fetch data
+    const pageData = await getData(params)
+   
+    return {
+      title: pageData.title,
+      description: pageData.description,
+      openGraph: {
+        images: process.env.NEXT_PUBLIC_DIRECTUS_URL + '/assets/' + pageData.featured_image,
+      },
+    }
+  }
+  
 export default async function Page({ params }) {
     const data = await getData(params)
     return (

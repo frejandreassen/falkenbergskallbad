@@ -110,7 +110,7 @@ const [checkoutOpen, setCheckoutOpen] = useState(false)
   return (
     <div className="bg-white py-24 px-4 max-w-5xl mx-auto">
     <Checkout open={checkoutOpen} setOpen={setCheckoutOpen} />
-    <h1 className="font-bodoni-moda text-3xl my-10">Boka bastu</h1>
+    <h1 className="font-bodoni-moda text-3xl my-10">Denna sida är under uppbyggnad</h1>
     <div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
       <div className="md:pr-14">
         <div className="flex items-center">

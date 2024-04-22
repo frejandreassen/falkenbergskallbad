@@ -51,7 +51,7 @@ export default async function Page({ params }) {
                         <span className="bg-white px-2 text-sm text-gray-500">Artiklar</span>
                     </div>
                 </div>
-                <Blog articles={data.articles} title={data.title} description={data.description}/>
+                <Blog articles={data.articles.filter(a => a.status === 'published')} title={data.title} description={data.description}/>
             </> : null
             }
         </div>

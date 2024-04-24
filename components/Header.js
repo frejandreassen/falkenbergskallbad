@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import Image from 'next/image'
+import { Temperature } from './temperature'
 
 
 export default function Header({navigation, logo}){
@@ -14,12 +16,17 @@ export default function Header({navigation, logo}){
                 <div className="flex lg:flex-1">
                     <Link href="/" className="-m-1.5 p-1.5">
                         <span className="sr-only">Falkenbergs Kallbadsvänner</span>
-                        <img
+                        <Image
                             className="h-8 w-auto"
+                            width={40}
+                            height={40}
                             src={logoUrl}
                             alt="Falkenbergs Kallbad logo"
                         />
                     </Link>
+                </div>
+                <div className="flex lg:hidden">
+                    {/* <Temperature /> */}
                 </div>
                 <div className="flex lg:hidden">
                     <button
@@ -39,7 +46,7 @@ export default function Header({navigation, logo}){
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    
+                    {/* <Temperature /> */}
                 </div>
             </nav>
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -48,12 +55,17 @@ export default function Header({navigation, logo}){
                     <div className="flex items-center justify-between">
                         <a href="#" className="-m-1.5 p-1.5">
                             <span className="sr-only">Falkenbergs Kallbad</span>
-                            <img
+                            <Image
                                 className="h-8 w-auto"
+                                width={40}
+                                height={40}
                                 src={logoUrl}
-                                alt=""
+                                alt="Falkenbergs Kallbad logo"
                             />
                         </a>
+                        <div className="flex lg:hidden">
+                            {/* <Temperature /> */}
+                        </div>
                         <button
                             type="button"
                             className="-m-2.5 rounded-md p-2.5 text-gray-700"

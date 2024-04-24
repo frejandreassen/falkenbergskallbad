@@ -133,9 +133,11 @@ export default function Membership({startPage, assetUrl, email}) {
                   </p>
                 </blockquote>
                 <figcaption className="mt-10 flex gap-x-6">
-                  <img
+                  <Image
                     src={assetUrl+'/'+startPage.membership_testimonial_image}
-                    alt=""
+                    width={40}
+                    height={40}
+                    alt="Medlem berättar"
                     className="h-12 w-12 flex-none rounded-full bg-gray-50"
                   />
                   <div>

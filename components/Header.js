@@ -63,9 +63,6 @@ export default function Header({navigation, logo}){
                                 alt="Falkenbergs Kallbad logo"
                             />
                         </a>
-                        <div className="flex lg:hidden">
-                            <Temperature />
-                        </div>
                         <button
                             type="button"
                             className="-m-2.5 rounded-md p-2.5 text-gray-700"

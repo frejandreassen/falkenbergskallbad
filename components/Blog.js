@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 
 
@@ -15,7 +16,9 @@ import Link from "next/link"
               {filteredArticles.map((post) => (
                 <article key={post.id} className="relative isolate flex flex-col gap-8 lg:flex-row">
                   <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
-                    <img
+                    <Image
+                      height={250}
+                      width={250}
                       src={`${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${post.featured_image}`}
                       alt=""
                       className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"

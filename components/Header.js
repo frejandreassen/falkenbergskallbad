@@ -26,7 +26,7 @@ export default function Header({navigation, logo}){
                     </Link>
                 </div>
                 <div className="flex lg:hidden">
-                    {/* <Temperature /> */}
+                    <Temperature />
                 </div>
                 <div className="flex lg:hidden">
                     <button
@@ -46,7 +46,7 @@ export default function Header({navigation, logo}){
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    {/* <Temperature /> */}
+                    <Temperature />
                 </div>
             </nav>
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -64,7 +64,7 @@ export default function Header({navigation, logo}){
                             />
                         </a>
                         <div className="flex lg:hidden">
-                            {/* <Temperature /> */}
+                            <Temperature />
                         </div>
                         <button
                             type="button"

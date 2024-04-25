@@ -2,21 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { getTemperature } from "@/lib/actions";
 
 function formatTemperature(tempString) {
-    // Replace commas with dots if the input uses comma as a decimal separator
-    const cleanTempString = tempString.replace(',', '.');
-    
-    const temp = parseFloat(cleanTempString); // Convert cleaned string to float
-
-    if (isNaN(temp)) {
-        return 'Invalid temperature'; // Return a message if the conversion fails
-    }
-
-    const formatter = new Intl.NumberFormat('sv-SE', {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1
-    });
-
-    return formatter.format(temp); // Format according to Swedish standards
+  let temp = parseFloat(tempString); // Convert string to float
+  let formatted = temp.toFixed(1);   // Ensures one decimal place
+  return formatted.replace('.', ','); // Replaces dot with comma
 }
 
 export function Temperature() {

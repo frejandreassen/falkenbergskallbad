@@ -17,10 +17,8 @@ export default function Article({ content }) {
             <Image
               src={src}
               alt={alt}
-              width={width || 'auto'}
-              height={height || 'auto'}
-              layout="responsive"
-              unoptimized={true} // Use if your external images are not optimized
+              width={width || 300}
+              height={height || 300}
             />
           );
         }

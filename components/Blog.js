@@ -13,7 +13,7 @@ import Link from "next/link"
               {content}
             </p>
             <div className="mt-16 space-y-20 lg:mt-20 lg:space-y-20">
-              {filteredArticles.map((post) => (
+              {filteredArticles.reverse().map((post) => (
                 <article key={post.id} className="relative isolate flex flex-col gap-8 lg:flex-row">
                   <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
                     <Image

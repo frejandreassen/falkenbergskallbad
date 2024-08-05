@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { sendMembershipEmail } from '@/lib/actions';
+import { sendMembershipEmail, createNewMember } from '@/lib/actions';
 import Image from 'next/image';
 
 const formSchema = z.object({
@@ -37,7 +37,8 @@ export default function Membership({startPage, assetUrl, email}) {
   async function onSubmit(values) {
     console.log(values);
     try {
-      await sendMembershipEmail(email, values, startPage.membership_payment_info);
+      // await sendMembershipEmail(email, values, startPage.membership_payment_info);
+      await createNewMember(values);
       setMessageSent(true); // Set the message sent state to true on success
     } catch (error) {
       console.error("Failed to send message:", error);

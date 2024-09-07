@@ -3,7 +3,7 @@ import Image from "next/image"
 
 export default function Hero({startPage, assetUrl}){
     return(
-        <div className="relative isolate pt-14">
+        <div className="relative isolate pt-14 z-0">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
           aria-hidden="true"

@@ -4,7 +4,12 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import Checkout from './Checkout'
 
 export default function CheckoutPanel({ open, setOpen, selectedSlot }) {
-
+  const priceList = {
+    regularPricePerSeat: 200,  // Regular price per seat
+    memberPricePerSeat: 150,   // Member price per seat
+    regularPriceEntireSauna: 1000,  // Regular price for entire sauna
+    memberPriceEntireSauna: 800,    // Member price for entire sauna
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -59,6 +64,7 @@ export default function CheckoutPanel({ open, setOpen, selectedSlot }) {
                         availableSeats={selectedSlot.available_seats}
                         pricePerSeat={20}
                         entireSaunaPrice={150} // Adjust this value as needed
+                        priceList={priceList}
                         selectedSlot={selectedSlot} />
                     </div>
                   </div>

@@ -1,11 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react';
-import Checkout from './CheckoutPanel';
+import CheckoutPanel from './CheckoutPanel';
 import DatePicker from '@/components/DatePicker'
-import { format, parse, isValid, startOfDay, isSameDay } from 'date-fns'
+import { format, parse, isValid, startOfDay, isSameDay, compareAsc } from 'date-fns'
 import { sv } from 'date-fns/locale';
 
-export default function Booking({ slots }) {
+export default function Booking({ slots, priceList }) {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedSlot, setSelectedSlot] = useState({})
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -18,7 +18,13 @@ export default function Booking({ slots }) {
         const slotDate = new Date(slot.start_time);
         return isSameDay(selectedDateObj, slotDate);
       });
-      setFilteredSlots(slotsForSelectedDate);
+      
+      // Sort the filtered slots by start time in ascending order
+      const sortedSlots = slotsForSelectedDate.sort((a, b) => 
+        compareAsc(new Date(a.start_time), new Date(b.start_time))
+      );
+      
+      setFilteredSlots(sortedSlots);
     }
   }, [selectedDate, slots]);
 
@@ -30,12 +36,12 @@ export default function Booking({ slots }) {
 
   function selectSlot(slot) {
     setSelectedSlot(slot)
-    setCheckoutOpen(true) 
+    setCheckoutOpen(true)
   }
 
   return (
     <div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
-      <Checkout open={checkoutOpen} setOpen={setCheckoutOpen} selectedSlot={selectedSlot}/>
+      <CheckoutPanel open={checkoutOpen} setOpen={setCheckoutOpen} selectedSlot={selectedSlot} priceList={priceList}/>
       <div className="md:pr-14">
         <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
       </div>
@@ -76,6 +82,9 @@ export default function Booking({ slots }) {
             )}
           </>
         )}
+        <p className="mt-6 text-xs text-gray-500 px-4">
+          * Vid bokning av hela bastun kan man bortse från herrar / damer / mixat
+        </p>
       </section>
     </div>
   )

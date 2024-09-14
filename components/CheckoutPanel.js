@@ -3,13 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import Checkout from './Checkout'
 
-export default function CheckoutPanel({ open, setOpen, selectedSlot }) {
-  const priceList = {
-    regularPricePerSeat: 200,  // Regular price per seat
-    memberPricePerSeat: 150,   // Member price per seat
-    regularPriceEntireSauna: 1000,  // Regular price for entire sauna
-    memberPriceEntireSauna: 800,    // Member price for entire sauna
-  };
+export default function CheckoutPanel({ open, setOpen, selectedSlot, priceList }) {
 
   return (
     <Transition.Root show={open} as={Fragment}>

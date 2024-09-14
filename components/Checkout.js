@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { z } from 'zod';
+import { differenceInMinutes } from 'date-fns';
 
 import Confirmation from './CheckoutSteps/4.Confirmation';
 import Payment from './CheckoutSteps/3. Payment';
@@ -35,16 +36,44 @@ const orderSchema = z.object({
 const Checkout = ({ selectedSlot, priceList }) => {
   const [currentStep, setCurrentStep] = useState('seats');
   const [errors, setErrors] = useState({});
+
+  const slotDuration = Math.round(differenceInMinutes(selectedSlot.end_time, selectedSlot.start_time) / 60);
+  const prices = {
+    regularPricePerSeat: 0,  // Regular price per seat
+    memberPricePerSeat: 0,   // Member price per seat
+    regularPriceEntireSauna: 0,  // Regular price for entire sauna
+    memberPriceEntireSauna: 0,    // Member price for entire sauna
+  };
+  switch (slotDuration) {
+    case 1: 
+      prices.regularPricePerSeat = priceList.seat_1hour
+      prices.memberPricePerSeat = priceList.seat_1hour_member
+      prices.regularPriceEntireSauna = priceList.sauna_1hour
+      prices.memberPriceEntireSauna = priceList.sauna_1hour_member;
+      break;
+    case 2: 
+      prices.regularPricePerSeat = priceList.seat_2hour
+      prices.memberPricePerSeat = priceList.seat_2hour_member
+      prices.regularPriceEntireSauna = priceList.sauna_2hour
+      prices.memberPriceEntireSauna = priceList.sauna_2hour_member;
+      break;
+    case 3: 
+      prices.regularPricePerSeat = priceList.seat_3hour
+      prices.memberPricePerSeat = priceList.seat_3hour_member
+      prices.regularPriceEntireSauna = priceList.sauna_3hour
+      prices.memberPriceEntireSauna = priceList.sauna_3hour_member;
+      break;
+  }
   const [order, setOrder] = useState({
     selectedSeats: 1,
     slotId: selectedSlot.id, 
     phone: '0706920705',
     email: 'frej.andreassen@gmail.com',
     isMember: false,
-    paymentMethod: '', 
+    paymentMethod: '',
     couponId: 0, 
     couponCode: '',
-    totalPrice: priceList.regularPricePerSeat,
+    totalPrice: prices.regularPricePerSeat,
     userCards: []
   });
 
@@ -118,7 +147,7 @@ const Checkout = ({ selectedSlot, priceList }) => {
           order={order}
           setOrder={setOrder}
           selectedSlot={selectedSlot}
-          priceList={priceList}
+          priceList={prices}
           formatSeats={formatSeats}
           setCurrentStep={setCurrentStep}
           validateOrder={validateOrder}
@@ -137,7 +166,7 @@ const Checkout = ({ selectedSlot, priceList }) => {
           setOrder={setOrder}
           errors={errors}
           setErrors={setErrors}
-          priceList={priceList}
+          priceList={prices}
           formatSeats={formatSeats}
           setCurrentStep={setCurrentStep}
           validateOrder={validateOrder}
@@ -145,14 +174,9 @@ const Checkout = ({ selectedSlot, priceList }) => {
       case 'confirmation':
         return <Confirmation 
           order={order} 
-          selectedSlot={selectedSlot}
-          priceList={priceList}
-          formatDateTime={formatDateTime}
-          formatTime={formatTime}
-          formatSeats={formatSeats}
         />;
-        case 'error':
-          return <ErrorComponent errors={errors} setCurrentStep={setCurrentStep}/>
+      case 'error':
+        return <ErrorComponent errors={errors} setCurrentStep={setCurrentStep}/>
       default:
         return null;
     }

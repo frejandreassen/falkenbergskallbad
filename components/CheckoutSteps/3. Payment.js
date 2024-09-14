@@ -66,8 +66,10 @@ const Payment = ({ order, setOrder, errors, setErrors, formatSeats, setCurrentSt
       setErrors({ booking: booking.message });
       setCurrentStep('error')
     }
-    if (booking.success) setErrors({})
-    setCurrentStep('confirmation')
+    if (booking.success) {
+      setErrors({})
+      setCurrentStep('confirmation')
+    }
 
   }
 

@@ -12,7 +12,7 @@ const steps = [
   { id: 'seats', name: 'Välj platser' },
   { id: 'contact', name: 'Kontaktinformation' },
   { id: 'payment', name: 'Betalning' },
-  { id: 'confirmation', name: 'Bekräftelse' }
+  // { id: 'confirmation', name: 'Bekräftelse' }
 ];
 
 // Define the order schema
@@ -208,23 +208,24 @@ const Checkout = ({ selectedSlot, priceList }) => {
           ← Tillbaka
         </button>
       )}
-
-      <div className="flex justify-between items-center pt-6">
-        {steps.map((step, index) => (
-          <div key={step.id} className="flex-1 flex flex-col items-center">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              step.id === currentStep ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-600'
-            }`}>
-              {index + 1}
+      {(currentStep === 'seats' || currentStep === 'contact' || currentStep === 'payment') && (
+        <div className="flex justify-between items-center pt-6">
+          {steps.map((step, index) => (
+            <div key={step.id} className="flex-1 flex flex-col items-center">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                step.id === currentStep ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-600'
+              }`}>
+                {index + 1}
+              </div>
+              <span className={`text-xs mt-1 text-center ${
+                step.id === currentStep ? 'text-indigo-600' : 'text-gray-400'
+              }`}>
+                {step.name}
+              </span>
             </div>
-            <span className={`text-xs mt-1 text-center ${
-              step.id === currentStep ? 'text-indigo-600' : 'text-gray-400'
-            }`}>
-              {step.name}
-            </span>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       <pre>{JSON.stringify(order,0,2)}</pre>
       <pre>{JSON.stringify(errors,0,2)}</pre>
     </div>

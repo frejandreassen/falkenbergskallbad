@@ -75,21 +75,21 @@ const Payment = ({ order, setOrder, errors, setErrors, formatSeats, setCurrentSt
     }
 
   }
+
   const handleBookingUsingSwish = async () => {
     setIsLoading(true);
     try {
       const newPaymentRequest = await createPaymentRequest(order.totalPrice, "Bastu Falkenbergs Kallbad");
       setPaymentRequest(newPaymentRequest);
-
-      
+  
       // Simulate opening Swish on mobile
       if (window.innerWidth < 700) {
         window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.protocol}//${window.location.hostname}/bekrafta/${newPaymentRequest.id}`;
       }
-
+  
       let attempts = 0;
       const maxAttempts = 15; // 30 seconds / 2 seconds interval
-
+  
       const pollPaymentStatus = async () => {
         const pollInterval = setInterval(async () => {
           attempts++;
@@ -101,10 +101,14 @@ const Payment = ({ order, setOrder, errors, setErrors, formatSeats, setCurrentSt
               setErrors({ payment: `Payment ${status.toLowerCase()}` });
             } else if (status === 'PAID') {
               clearInterval(pollInterval);
-              const booking = await bookUsingSwish(order, newPaymentRequest);
+              const booking = await bookUsingSwish(order, newPaymentRequest.id);
               if (booking.success) {
                 setErrors({});
                 setCurrentStep('confirmation');
+              }
+              if (!booking.success) {
+                setErrors({payment: booking.message});
+                setCurrentStep('error');
               }
             } else if (attempts >= maxAttempts) {
               clearInterval(pollInterval);
@@ -114,11 +118,11 @@ const Payment = ({ order, setOrder, errors, setErrors, formatSeats, setCurrentSt
             clearInterval(pollInterval);
             console.error('Payment error:', error.message);
             setErrors({ payment: error.message });
-            setCurrentStep('error')
+            setCurrentStep('error');
           }
         }, 2000);
       };
-
+  
       pollPaymentStatus();
     } catch (error) {
       console.error('Error creating payment request:', error);
@@ -127,7 +131,6 @@ const Payment = ({ order, setOrder, errors, setErrors, formatSeats, setCurrentSt
       setIsLoading(false);
     }
   };
-
 
   const fetchUserCardInfo = async () => {
     setPaymentMethod('card');
@@ -164,11 +167,13 @@ const Payment = ({ order, setOrder, errors, setErrors, formatSeats, setCurrentSt
       {paymentRequest ? (
         <>
           <div className="hidden sm:block">
-            {/* <img 
-              className="m-auto" 
-              src={`data:image/png;base64, ${btoa(String.fromCharCode.apply(null, new Uint8Array(paymentRequest.qrCode.data)))}`} 
-              alt="Swish QR Code"
-            /> */}
+            {paymentRequest.qrCode && (
+              <img 
+                className="m-auto" 
+                src={`data:image/png;base64,${paymentRequest.qrCode}`}
+                alt="Swish QR Code"
+              />
+            )}
             <p className="text-sm text-gray-500 mt-5">Scanna QR koden med Swishappen för att genomföra betalning</p>
           </div>
           <div className="sm:hidden">
@@ -183,21 +188,23 @@ const Payment = ({ order, setOrder, errors, setErrors, formatSeats, setCurrentSt
               </div>
             ) : (
               <div>
-                {/* <img 
-                  className="m-auto" 
-                  src={`data:image/png;base64, ${btoa(String.fromCharCode.apply(null, new Uint8Array(paymentRequest.qrCode.data)))}`} 
-                  alt="Swish QR Code"
-                /> */}
+                {paymentRequest.qrCode && (
+                  <img 
+                    className="m-auto" 
+                    src={`data:image/png;base64,${paymentRequest.qrCode}`}
+                    alt="Swish QR Code"
+                  />
+                )}
                 <p className="text-sm text-gray-500 mt-5">Scanna QR koden med Swishappen för att genomföra betalning</p>
               </div>
             )}
           </div>
           <button
             type="button"
-            className="mt-16 inline-flex space-x-5 items-center justify-center mt-5 mb-3 lg:mb-0 lg:mr-3 w-full lg:w-auto py-2 px-6 leading-loose bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-l-xl rounded-t-xl transition duration-200"className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             <a href={`swish://paymentrequest?token=${paymentRequest.token}&callbackurl=${window.location.protocol}//${window.location.hostname}/bekrafta/${paymentRequest.id}`}>
-              Öppna Swish
+              Öppna Swish på denna enhet
             </a>
           </button>
         </>

@@ -102,11 +102,9 @@ const Payment = ({
       );
       setPaymentRequest(newPaymentRequest);
 
-      const callbackUrl = `${window.location.origin}/bokning?paymentId=${newPaymentRequest.id}&order=${encodedOrder}`;
-      console.log(callbackUrl);
       // Opening Swish on mobile
       if (window.innerWidth < 700) {
-        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${callbackUrl}`;
+        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=callbackurl=${window.location.origin}/bokning?paymentId=${paymentRequest.id}&order=${encodedOrder}`;
       }
 
       let attempts = 0;

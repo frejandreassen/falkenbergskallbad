@@ -78,8 +78,8 @@ const Checkout = ({ selectedSlot, priceList }) => {
   const [order, setOrder] = useState({
     selectedSeats: 1,
     slotId: selectedSlot.id,
-    phone: "0706920705",
-    email: "frej.andreassen@gmail.com",
+    phone: "",
+    email: "",
     isMember: false,
     paymentMethod: "",
     couponId: 0,

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   findBookingByPaymentRequest,
@@ -21,7 +21,7 @@ const Loader = () => (
   </div>
 );
 
-export default function SwishCallback() {
+function SwishCallbackContent() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -42,7 +42,6 @@ export default function SwishCallback() {
     }
 
     return () => {
-      // Cleanup function to cancel any ongoing processes
       hasStartedRef.current = false;
     };
   }, [searchParams]);
@@ -108,7 +107,6 @@ export default function SwishCallback() {
 
     poll();
   };
-
   if (isLoading) {
     return (
       <div className="bg-white py-24 px-4 max-w-5xl mx-auto">
@@ -137,4 +135,12 @@ export default function SwishCallback() {
   }
 
   return null;
+}
+
+export default function SwishCallback() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <SwishCallbackContent />
+    </Suspense>
+  );
 }

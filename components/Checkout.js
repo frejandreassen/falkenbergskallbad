@@ -88,9 +88,9 @@ const Checkout = ({ selectedSlot, priceList }) => {
     userCards: [],
   });
 
-  const validateOrder = (step) => {
+  const validateOrder = () => {
     let schemaToValidate;
-    switch (step) {
+    switch (currentStep) {
       case "seats":
         schemaToValidate = orderSchema.pick({
           selectedSeats: true,
@@ -266,8 +266,8 @@ const Checkout = ({ selectedSlot, priceList }) => {
           ))}
         </div>
       )}
-      {/*<pre>{JSON.stringify(order,0,2)}</pre>
-      <pre>{JSON.stringify(errors,0,2)}</pre>*/}
+      {/* <pre>{JSON.stringify(order, 0, 2)}</pre>
+      <pre>{JSON.stringify(errors, 0, 2)}</pre> */}
     </div>
   );
 };

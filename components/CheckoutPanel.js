@@ -1,10 +1,14 @@
-import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import Checkout from './Checkout'
+import { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import Checkout from "./Checkout";
 
-export default function CheckoutPanel({ open, setOpen, selectedSlot, priceList }) {
-
+export default function CheckoutPanel({
+  open,
+  setOpen,
+  selectedSlot,
+  priceList,
+}) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -59,7 +63,8 @@ export default function CheckoutPanel({ open, setOpen, selectedSlot, priceList }
                         pricePerSeat={20}
                         entireSaunaPrice={150} // Adjust this value as needed
                         priceList={priceList}
-                        selectedSlot={selectedSlot} />
+                        selectedSlot={selectedSlot}
+                      />
                     </div>
                   </div>
                 </Dialog.Panel>
@@ -69,5 +74,5 @@ export default function CheckoutPanel({ open, setOpen, selectedSlot, priceList }
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

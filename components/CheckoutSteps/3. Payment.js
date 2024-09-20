@@ -7,8 +7,8 @@ import {
   getPayment,
   bookUsingCard,
   bookUsingSwish,
+  createTransaction,
 } from "@/lib/actions";
-import { createPaymentRequest } from "@/lib/swish";
 
 const Loader = () => (
   <div className="space-y-6 min-h-[400px] flex items-center">
@@ -33,7 +33,6 @@ const Payment = ({
   const [hasAttemptedCardFetch, setHasAttemptedCardFetch] = useState(false);
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [manualQrVisible, setManualQrVisible] = useState(false);
-  const encodedOrder = encodeURIComponent(JSON.stringify(order));
 
   useEffect(() => {
     const verifyMembership = async () => {
@@ -96,16 +95,15 @@ const Payment = ({
   const handleBookingUsingSwish = async () => {
     setIsLoading(true);
     try {
-      const newPaymentRequest = await createPaymentRequest(
-        order.totalPrice,
+      const newPaymentRequest = await createTransaction(
+        order,
         "Bastu Falkenbergs Kallbad",
       );
       setPaymentRequest(newPaymentRequest);
 
       // Opening Swish on mobile
       if (window.innerWidth < 700) {
-        // window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=callbackurl=${window.location.origin}/bokning?paymentId=${paymentRequest.id}&order=${encodedOrder}`;//NOT GETTING THE ORDER THORUGH SWISH
-        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.origin}/boka`;
+        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=callbackurl=${window.location.origin}/bokning?paymentId=${paymentRequest.id}`;
       }
 
       let attempts = 0;
@@ -115,17 +113,17 @@ const Payment = ({
         const pollInterval = setInterval(async () => {
           attempts++;
           try {
-            const status = await getPayment(newPaymentRequest.id);
+            const payment = await getPayment(newPaymentRequest.id);
 
-            if (["DECLINED", "ERROR", "CANCELLED"].includes(status)) {
+            if (["DECLINED", "ERROR", "CANCELLED"].includes(payment.status)) {
               clearInterval(pollInterval);
               setErrors({
-                payment: `Betalningsförfrågan missslyckades. Status: ${status.toLowerCase()}`,
+                payment: `Betalningsförfrågan missslyckades. Status: ${payment.status.toLowerCase()}`,
               });
               setCurrentStep("error");
-            } else if (status === "PAID") {
+            } else if (payment.status === "PAID") {
               clearInterval(pollInterval);
-              const booking = await bookUsingSwish(order, newPaymentRequest.id);
+              const booking = await bookUsingSwish(payment.order, payment.id);
               if (booking.success) {
                 setErrors({});
                 setCurrentStep("confirmation");
@@ -251,7 +249,7 @@ const Payment = ({
             className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             <a
-              href={`swish://paymentrequest?token=${paymentRequest.token}&callbackurl=${window.location.origin}/bokning?paymentId=${paymentRequest.id}&order=${encodedOrder}`}
+              href={`swish://paymentrequest?token=${paymentRequest.token}&callbackurl=${window.location.origin}/bokning?paymentId=${paymentRequest.id}`}
             >
               Öppna Swish på denna enhet
             </a>

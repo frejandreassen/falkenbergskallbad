@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   findBookingByPaymentRequest,
@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 const Loader = () => (
   <div className="space-y-6 min-h-[400px] flex items-center">
     <div className="animate-pulse flex flex-col w-full justify-start">
-      <div className="rounded-full bg-gray-300 h-16 w-16 mb-4 items-center justify-center"></div>
+      <div className="rounded-full bg-gray-300 h-16 w-16 mb-4"></div>
       <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
       <div className="h-4 bg-gray-300 rounded w-1/2"></div>
     </div>
@@ -26,27 +26,19 @@ function SwishCallbackContent() {
   const [isLoading, setIsLoading] = useState(true);
   const searchParams = useSearchParams();
   const router = useRouter();
-  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     const paymentId = searchParams.get("paymentId");
-    const order = searchParams.get("order");
 
-    if (paymentId && order && !hasStartedRef.current) {
-      hasStartedRef.current = true;
-      const decodedOrder = JSON.parse(decodeURIComponent(order));
-      handlePaymentCallback(paymentId, decodedOrder);
-    } else if (!paymentId || !order) {
+    if (paymentId) {
+      handlePaymentCallback(paymentId);
+    } else {
       setError("Ogiltiga parametrar för Swish-återkoppling.");
       setIsLoading(false);
     }
-
-    return () => {
-      hasStartedRef.current = false;
-    };
   }, [searchParams]);
 
-  const handlePaymentCallback = async (paymentId, orderDetails) => {
+  const handlePaymentCallback = async (paymentId) => {
     try {
       const existingBooking = await findBookingByPaymentRequest(paymentId);
 
@@ -55,7 +47,7 @@ function SwishCallbackContent() {
         return;
       }
 
-      pollPaymentStatus(paymentId, orderDetails);
+      pollPaymentStatus(paymentId);
     } catch (error) {
       console.error("Error handling payment callback:", error);
       setError("Ett fel uppstod vid hantering av betalningen.");
@@ -63,40 +55,45 @@ function SwishCallbackContent() {
     }
   };
 
-  const pollPaymentStatus = async (paymentId, orderDetails) => {
+  const pollPaymentStatus = async (paymentId) => {
     const maxAttempts = 20;
     const pollingInterval = 3000;
     let attempts = 0;
 
     const poll = async () => {
-      if (!hasStartedRef.current) return; // Stop polling if component is unmounted
-
       try {
-        const paymentStatus = await getPayment(paymentId);
+        const payment = await getPayment(paymentId);
 
-        if (paymentStatus === "PAID") {
-          const booking = await bookUsingSwish(orderDetails, paymentId);
-          if (booking.success) {
-            router.push(`/bokning/${booking.uuid}`);
-          } else {
+        switch (payment.status) {
+          case "PAID":
+            const booking = await bookUsingSwish(payment.order, paymentId);
+            if (booking.success) {
+              router.push(`/bokning/${booking.uuid}`);
+            } else {
+              setError(
+                booking.message || "Det gick inte att slutföra bokningen.",
+              );
+              setIsLoading(false);
+            }
+            break;
+          case "DECLINED":
+          case "ERROR":
+          case "CANCELLED":
             setError(
-              booking.message || "Det gick inte att slutföra bokningen.",
+              `Betalningen misslyckades. Status: ${payment.status.toLowerCase()}`,
             );
             setIsLoading(false);
-          }
-        } else if (["DECLINED", "ERROR", "CANCELLED"].includes(paymentStatus)) {
-          setError(
-            `Betalningen misslyckades. Status: ${paymentStatus.toLowerCase()}`,
-          );
-          setIsLoading(false);
-        } else if (attempts < maxAttempts) {
-          attempts++;
-          setTimeout(poll, pollingInterval);
-        } else {
-          setError(
-            "Tidsgränsen för betalningsverifiering har överskridits. Vänligen kontrollera din Swish-app eller försök igen.",
-          );
-          setIsLoading(false);
+            break;
+          default:
+            if (attempts < maxAttempts) {
+              attempts++;
+              setTimeout(poll, pollingInterval);
+            } else {
+              setError(
+                "Tidsgränsen för betalningsverifiering har överskridits. Vänligen kontrollera din Swish-app eller försök igen.",
+              );
+              setIsLoading(false);
+            }
         }
       } catch (error) {
         console.error("Error polling payment status:", error);
@@ -107,6 +104,7 @@ function SwishCallbackContent() {
 
     poll();
   };
+
   if (isLoading) {
     return (
       <div className="bg-white py-24 px-4 max-w-5xl mx-auto">
@@ -139,8 +137,8 @@ function SwishCallbackContent() {
 
 export default function SwishCallback() {
   return (
-    <Suspense fallback={<Loader />}>
+    <React.Suspense fallback={<Loader />}>
       <SwishCallbackContent />
-    </Suspense>
+    </React.Suspense>
   );
 }

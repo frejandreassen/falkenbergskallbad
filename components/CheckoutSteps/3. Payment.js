@@ -105,7 +105,7 @@ const Payment = ({
       // Opening Swish on mobile
       if (window.innerWidth < 700) {
         // window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=callbackurl=${window.location.origin}/bokning?paymentId=${paymentRequest.id}&order=${encodedOrder}`;//NOT GETTING THE ORDER THORUGH SWISH
-        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=callbackurl=${window.location.origin}/boka`;
+        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.origin}/boka`;
       }
 
       let attempts = 0;

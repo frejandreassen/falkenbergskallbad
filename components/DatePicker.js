@@ -108,7 +108,7 @@ function Calendar({ selectedDate, setSelectedDate }) {
               dateTime={day.date}
               className={classNames(
                 'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-                day.isSelected && 'bg-gray-600',
+                day.isSelected && 'bg-indigo-600',
               )}
             >
               {day.date.split('-').pop().replace(/^0/, '')}
@@ -116,14 +116,14 @@ function Calendar({ selectedDate, setSelectedDate }) {
           </button>
         ))}
       </div>
-      {selectedDate && (
+      {/* {selectedDate && (
         <div className="flex items-center justify-between border-t border-gray-200 pt-6">
           <dt className="text-base font-medium">Valt datum</dt>
           <dd className="text-base font-medium text-gray-900">
             {format(new Date(selectedDate), 'dd MMM yyyy', {locale: sv})}
           </dd>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

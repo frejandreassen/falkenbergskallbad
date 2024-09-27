@@ -48,9 +48,9 @@ export default function Booking({ slots, priceList }) {
       <section className="mt-12 md:mt-0 md:pl-14">
         <h2 className="text-base font-semibold leading-6 text-gray-900">
           {selectedDate ? (
-            <>
+            <div className="py-4 border-b text-indigo-600 font-bold">
               Tider för <time dateTime={selectedDate}>{format(new Date(selectedDate), 'dd MMM yyyy', { locale: sv })}</time>
-            </>
+            </div>
           ) : (
             'Välj ett datum för att se tillgängliga tider'
           )}

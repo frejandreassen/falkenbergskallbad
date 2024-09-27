@@ -58,13 +58,20 @@ export default function CheckoutPanel({
                     </div>
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                       {/* <pre>{JSON.stringify(selectedSlot,0,2)}</pre>   */}
-                      <Checkout
-                        availableSeats={selectedSlot.available_seats}
-                        pricePerSeat={20}
-                        entireSaunaPrice={150} // Adjust this value as needed
-                        priceList={priceList}
-                        selectedSlot={selectedSlot}
-                      />
+                      {selectedSlot.available_seats < 1 ? (
+                        <div className="py-10">
+                          <p className="text-xl font-semibold text-gray-900">Tyvärr är denna tid fullbokad</p>
+                          <p className="mt-2 text-sm text-gray-500">Vänligen välj en annan tid eller återkom senare.</p>
+                        </div>
+                      ) : (
+                        <Checkout
+                          availableSeats={selectedSlot.available_seats}
+                          pricePerSeat={20}
+                          entireSaunaPrice={150}
+                          priceList={priceList}
+                          selectedSlot={selectedSlot}
+                        />
+                      )}
                     </div>
                   </div>
                 </Dialog.Panel>

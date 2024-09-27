@@ -11,7 +11,7 @@ const priceList = await getPriceList()
   return (
     <div className="bg-white py-24 px-4 max-w-5xl mx-auto">
     
-    <h1 className="font-bodoni-moda text-3xl my-10">Denna sida är under uppbyggnad</h1>
+    <h1 className="font-bodoni-moda text-3xl my-10 hidden lg:block">Boka bastu</h1>
     <Booking slots={slots} priceList={priceList}/>
     
     </div>

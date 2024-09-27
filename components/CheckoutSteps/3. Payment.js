@@ -58,7 +58,7 @@ const Payment = ({
         }
       }
     };
-
+    setPaymentMethod('')
     verifyMembership();
   }, [order.isMember, order.email, setErrors, setCurrentStep]);
 
@@ -320,12 +320,18 @@ const Payment = ({
           >
             <img src="/swish-logo.svg" alt="Swish" className="h-7" />
           </button>
+            <button
+                onClick={fetchUserCardInfo}
+                className="px-4 py-3 border rounded-md shadow-sm text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                Klippkort
+            </button>
           {order.selectedSeats <= 1 && (
             <button
               onClick={fetchUserCardInfo}
               className="px-4 py-3 border rounded-md shadow-sm text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
             >
-              Årskort / Klippkort
+              Årskort
             </button>
           )}
         </div>

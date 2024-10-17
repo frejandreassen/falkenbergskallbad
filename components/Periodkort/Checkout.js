@@ -37,8 +37,8 @@ const Checkout = () => {
   const [order, setOrder] = useState({
     startDate: today,
     expiryDate: expiryDate,
-    phone: "0706920705",
-    email: "frej.andreassen@gmail.com",
+    phone: "",
+    email: "",
     selectedProduct: "",
     totalUses: 1000,
     totalPrice: 0,

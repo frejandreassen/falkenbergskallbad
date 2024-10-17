@@ -107,6 +107,10 @@ export default function BookingDetailsPage({ params }) {
     );
   }
 
+  const vatAmount = bookingDetails.transaction
+    ? (bookingDetails.transaction.amount * 0.2).toFixed(2)
+    : 0;
+
   return (
     <div className="bg-white py-24 px-4 max-w-2xl mx-auto">
       <h1 className="font-bodoni-moda text-3xl mb-12">Bokningsdetaljer</h1>
@@ -153,7 +157,7 @@ export default function BookingDetailsPage({ params }) {
               <strong>Belopp:</strong> {bookingDetails.transaction.amount} kr
             </p>
             <p>
-              <strong>Varav moms:</strong> 0 kr
+              <strong>Varav moms (25%):</strong> {vatAmount} kr
             </p>
             <p>
               <strong>Betalningsmetod:</strong> Swish

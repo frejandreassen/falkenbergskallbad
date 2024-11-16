@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { parseISO } from "date-fns";
+import { parseISO, format } from "date-fns";
+import { sv } from 'date-fns/locale';
 import {
   getUserCoupons,
   checkMembership,
@@ -75,7 +76,7 @@ const Payment = ({
     const { name, value } = e.target;
     setOrder({
       ...order,
-      [name === "cardSelection" ? "couponId" : name]: value,
+      [name === "cardSelection" ? "couponId" : name]: name === "cardSelection" ? value.toString() : value,
     });
   };
 
@@ -163,7 +164,7 @@ const Payment = ({
       setOrder((prevOrder) => ({
         ...prevOrder,
         userCards: coupons,
-        couponId: coupons.length > 0 ? coupons[0].id : "",
+        couponId: coupons.length > 0 ? coupons[0].id.toString() : "",
       }));
     } catch (err) {
       console.error("Error fetching user card info:", err);
@@ -365,14 +366,14 @@ const Payment = ({
                         type="radio"
                         name="cardSelection"
                         value={card.id}
-                        checked={order.couponId === card.id}
+                        checked={order.couponId === card.id.toString()}
                         onChange={handleCouponChange}
                         className="form-radio h-5 w-5 text-indigo-600"
                       />
                       <span className="text-gray-700">
                         {card.type || "Kort"} -
                         {card.expiry_date
-                          ? ` Giltigt till: ${new Date(card.expiry_date).toLocaleDateString()}`
+                          ? ` Giltigt till: ${format(new Date(card.expiry_date), 'dd MMM yyyy', { locale: sv })}`
                           : ""}
                         {card.remaining_uses < 30
                           ? ` - Återstående användningar: ${card.remaining_uses}`

@@ -161,10 +161,16 @@ const Payment = ({
     setIsLoading(true);
     try {
       const coupons = await getUserCoupons(order.email);
+      
+      // Filter coupons based on selectedSeats
+      const filteredCoupons = order.selectedSeats > 1
+        ? coupons.filter(coupon => coupon.type === "Klippkort")
+        : coupons;
+  
       setOrder((prevOrder) => ({
         ...prevOrder,
-        userCards: coupons,
-        couponId: coupons.length > 0 ? coupons[0].id.toString() : "",
+        userCards: filteredCoupons,
+        couponId: filteredCoupons.length > 0 ? filteredCoupons[0].id.toString() : "",
       }));
     } catch (err) {
       console.error("Error fetching user card info:", err);

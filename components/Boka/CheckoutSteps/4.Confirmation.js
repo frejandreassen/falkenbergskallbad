@@ -7,6 +7,7 @@ const Confirmation = () => {
             <p className="text-gray-600">Din bokning är bekräftad.</p>
             <p className="text-gray-600">Bokningsinformation har skickats till din e-post.</p>
             <p className="text-gray-600">Vi ser fram emot att välkomna dig!</p>
+            <p className="text-gray-600">/Falkenbergs kallbadsvänner</p>
         </div>
     )
 }

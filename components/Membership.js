@@ -216,8 +216,9 @@ export default function Membership({startPage, assetUrl, email}) {
       ) : (
         <div>
           <div className="font-bold text-lg py-2">
-            Medlemsavgift: {MEMBERSHIP_PRICE} kr
+            Medlemsavgift : {MEMBERSHIP_PRICE} kr
           </div>
+          <div>Avser kalenderår {new Date().getFullYear()}</div>
           <button
             onClick={() => handlePaymentWithSwish(form.getValues())}
             disabled={!form.formState.isValid || isLoading}

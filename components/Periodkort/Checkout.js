@@ -9,7 +9,7 @@ import ErrorComponent from "./CheckoutSteps/ErrorComponent";
 import ProductSelection from "./CheckoutSteps/1. Product";
 
 const steps = [
-  { id: "selectProduct", name: "Välj platser" },
+  { id: "selectProduct", name: "Välj produkt" },
   { id: "contact", name: "Kontaktinformation" },
   { id: "payment", name: "Betalning" },
   // { id: 'confirmation', name: 'Bekräftelse' }

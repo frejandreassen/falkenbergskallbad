@@ -29,7 +29,7 @@ const formSchema = z.object({
     ),
 });
 
-const MEMBERSHIP_PRICE = 1; // Set your membership price here
+const MEMBERSHIP_PRICE = 300; // Set your membership price here
 
 export default function Membership({startPage, assetUrl, email}) {
   const [paymentRequest, setPaymentRequest] = useState(null);
@@ -322,6 +322,7 @@ export default function Membership({startPage, assetUrl, email}) {
                 />
               </div>
               {renderContent()}
+              <p className="mt-4 text-xs">Om du istället vill betala med bankgiro: betala 300 kronor till bankgiro 145-4636, märk betalningen med ditt namn. Maila även telefon och namn till falkenbergskallbad@gmail.com</p>
             </form>
           </Form>
 

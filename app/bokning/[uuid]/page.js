@@ -168,8 +168,21 @@ export default function BookingDetailsPage({ params }) {
             <p>
               <strong>Betaldatum:</strong>{" "}
               {formatDate(bookingDetails.transaction.datePaid)}{" "}
-              {formatTime(bookingDetails.transaction.datePaid)}
+              {/* {formatTime(bookingDetails.transaction.datePaid)} */}
             </p>
+            
+            <div className="pt-8 space-y-2 text-sm">
+              <p>Falkenberg Kallbadsvänner</p>
+              <p>Organisationsnummer: 802542-2380</p>
+              <p>Riddarevägen 3</p>
+              <p>311 37 Falkenberg</p>
+              <a 
+                href="https://falkenbergskallbad.se/villkor" 
+                className="text-indigo-600 hover:text-indigo-800 hover:underline"
+              >
+                Våra köpvillkor
+              </a>
+            </div>
           </div>
         )}
 

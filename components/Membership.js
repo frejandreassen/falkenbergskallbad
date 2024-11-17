@@ -21,6 +21,12 @@ const formSchema = z.object({
   firstName: z.string().min(1, "Please enter your first name."),
   lastName: z.string().min(1, "Please enter your last name."),
   email: z.string().email("Invalid email address."),
+  telefon: z
+    .string()
+    .regex(
+      /^(07[0-9]{8}|\+467[0-9]{8})$/,
+      "Ange ditt mobilnummer enligt format 07XXXXXXXXX eller +467XXXXXXXX",
+    ),
 });
 
 export default function Membership({startPage, assetUrl, email}) {
@@ -30,7 +36,8 @@ export default function Membership({startPage, assetUrl, email}) {
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: ""
+      email: "",
+      telefon: ""
     },
   });
 
@@ -86,6 +93,7 @@ export default function Membership({startPage, assetUrl, email}) {
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )} />
                 <FormField control={form.control} name="lastName" render={({ field }) => (
@@ -94,9 +102,9 @@ export default function Membership({startPage, assetUrl, email}) {
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )} />
-                
               </div>
               <div className="my-6">
                 <FormField control={form.control} name="email" render={({ field }) => (
@@ -105,6 +113,18 @@ export default function Membership({startPage, assetUrl, email}) {
                     <FormControl>
                       <Input type="email" {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              </div>
+              <div className="my-6">
+                <FormField control={form.control} name="telefon" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mobiltelefon</FormLabel>
+                    <FormControl>
+                      <Input type="tel"{...field} />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )} />
               </div>
@@ -122,7 +142,6 @@ export default function Membership({startPage, assetUrl, email}) {
                     </article>
                   </div>
                 )}
-
             </form>
           </Form>
           
@@ -152,5 +171,4 @@ export default function Membership({startPage, assetUrl, email}) {
         </div>
       </div>
     )
-  }
-  
+}

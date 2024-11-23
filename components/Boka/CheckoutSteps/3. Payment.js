@@ -108,7 +108,7 @@ const Payment = ({
       }
 
       let attempts = 0;
-      const maxAttempts = 15; // 30 seconds / 2 seconds interval
+      const maxAttempts = 45; // 30 seconds / 2 seconds interval
 
       const pollPaymentStatus = async () => {
         const pollInterval = setInterval(async () => {

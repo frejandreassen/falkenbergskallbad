@@ -73,7 +73,7 @@ export default function Membership({startPage, assetUrl, email}) {
       }
 
       let attempts = 0;
-      const maxAttempts = 15;
+      const maxAttempts = 45;
 
       const pollPaymentStatus = async () => {
         const pollInterval = setInterval(async () => {

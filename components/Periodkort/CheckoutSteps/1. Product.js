@@ -34,6 +34,20 @@ const ProductSelection = ({ order, setOrder, setCurrentStep }) => {
 
   return (
     <div className="space-y-4">
+      <div className="bg-gray-50 p-4 rounded-lg mb-6">
+        <h2 className="text-lg font-medium text-gray-900 mb-4">Prislista</h2>
+        <div className="space-y-3">
+          <div>
+            <h3 className="font-medium text-gray-900">Årskort för medlemmar: 1000 kr</h3>
+            <p className="text-sm text-gray-600">Basta hur mycket du vill - gäller från inköpsdatum och ett år framåt. Observera att bastun är stängd juni-augusti</p>
+          </div>
+          <div>
+            <h3 className="font-medium text-gray-900">Klippkort 10 gånger, medlemmar: 400 kr</h3>
+            <p className="text-sm text-gray-600">Klippkortet gäller både för 1-timmes och 2-timmarspass.</p>
+          </div>
+        </div>
+      </div>
+
       <label
         htmlFor="product"
         className="block text-sm font-medium text-gray-700"

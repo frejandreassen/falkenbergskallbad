@@ -4,6 +4,17 @@ import { findBookingByUUID, cancelBooking } from "@/lib/actions";
 import { format, isValid, addHours, isBefore } from "date-fns";
 import { sv } from "date-fns/locale";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +60,7 @@ export default function BookingDetailsPage({ params }) {
     try {
       const result = await cancelBooking(bookingDetails.id);
       if (result.success) {
-        await fetchBookingDetails(); // Refetch booking details after successful cancellation
+        await fetchBookingDetails();
       } else {
         setError(result.message || "Failed to cancel booking");
       }
@@ -111,6 +122,35 @@ export default function BookingDetailsPage({ params }) {
     ? (bookingDetails.transaction.amount * 0.2).toFixed(2)
     : 0;
 
+  const CancellationButton = () => (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <button
+          disabled={isLoading}
+          className="mt-6 text-gray-500 hover:text-gray-700 underline focus:outline-none disabled:text-gray-300 disabled:no-underline"
+        >
+          {isLoading ? "Avbokar..." : "Avboka besök"}
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Är du säker på att du vill avboka?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Din bokning den {formatDate(bookingDetails.slot.date)} kl.{" "}
+            {formatTime(bookingDetails.slot.start_time)} kommer att avbokas och en
+            återbetalning initieras.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Avbryt</AlertDialogCancel>
+          <AlertDialogAction onClick={handleCancellation} className="bg-indigo-600">
+            Ja, avboka
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+
   return (
     <div className="bg-white py-24 px-4 max-w-2xl mx-auto">
       <h1 className="font-bodoni-moda text-3xl mb-12">Bokningsdetaljer</h1>
@@ -167,8 +207,7 @@ export default function BookingDetailsPage({ params }) {
             </p>
             <p>
               <strong>Betaldatum:</strong>{" "}
-              {formatDate(bookingDetails.transaction.datePaid)}{" "}
-              {/* {formatTime(bookingDetails.transaction.datePaid)} */}
+              {formatDate(bookingDetails.transaction.datePaid)}
             </p>
             
             <div className="pt-8 space-y-2 text-sm">
@@ -209,16 +248,10 @@ export default function BookingDetailsPage({ params }) {
 
         {error && <p className="text-red-500">{error}</p>}
         {isCancellationAllowed() ? (
-          <button
-            onClick={handleCancellation}
-            disabled={isLoading}
-            className="mt-6 text-gray-500 hover:text-gray-700 underline focus:outline-none disabled:text-gray-300 disabled:no-underline"
-          >
-            {isLoading ? "Avbokar..." : "Avboka besök"}
-          </button>
+          <CancellationButton />
         ) : (
           <p className="mt-6 text-gray-500">
-            Avbokning är inte möjlig mindre än 24 timmar före bokad tid.
+            Avbokning är inte möjlig senare än 24 timmar före bokad tid.
           </p>
         )}
       </div>

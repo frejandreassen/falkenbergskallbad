@@ -85,7 +85,7 @@ const MembershipCallback = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto p-6">
+      <div className="my-24 max-w-2xl mx-auto p-6">
         <Card>
           <CardHeader>
             <CardTitle>Verifierar medlemsregistrering...</CardTitle>
@@ -101,7 +101,7 @@ const MembershipCallback = () => {
 
   if (status === "success") {
     return (
-      <div className="max-w-2xl mx-auto p-6">
+      <div className="my-24 max-w-2xl mx-auto p-6">
         <Card>
           <CardHeader>
             <CardTitle>Välkommen som medlem!</CardTitle>
@@ -136,7 +136,7 @@ const MembershipCallback = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="my-24 max-w-2xl mx-auto p-6">
       <Card>
         <CardHeader>
           <CardTitle>Ett fel uppstod</CardTitle>
@@ -152,7 +152,7 @@ const MembershipCallback = () => {
             </p>
             <div className="pt-4">
               <Link
-                href="/medlem"
+                href="/#medlem"
                 className="text-indigo-600 hover:text-indigo-800 underline"
               >
                 Tillbaka till medlemsregistrering

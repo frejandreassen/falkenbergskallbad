@@ -69,7 +69,7 @@ export default function Membership({startPage, assetUrl, email}) {
 
       // Opening Swish on mobile
       if (window.innerWidth < 700) {
-        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.origin}/medlem?paymentId=${newPaymentRequest.id}`;
+        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.origin}/redirect/medlem?paymentId=${newPaymentRequest.id}`;
       }
 
       let attempts = 0;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createNewMember, getPayment } from "@/lib/actions";
 import Link from "next/link";
@@ -16,7 +16,8 @@ const Loader = () => (
   </div>
 );
 
-const MembershipCallback = () => {
+// Separate component that uses useSearchParams
+const MembershipVerification = () => {
   const [status, setStatus] = useState("pending");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -33,16 +34,6 @@ const MembershipCallback = () => {
 
     const verifyPayment = async () => {
       try {
-        // Check if member already exists for this payment
-        const existingMember = await findMemberByPaymentRequest(paymentId);
-        
-        if (existingMember) {
-          setStatus("success");
-          setIsLoading(false);
-          return;
-        }
-
-        // Poll payment status
         let attempts = 0;
         const maxAttempts = 20;
         const pollInterval = setInterval(async () => {
@@ -70,7 +61,6 @@ const MembershipCallback = () => {
           }
         }, 3000);
 
-        // Cleanup interval
         return () => clearInterval(pollInterval);
       } catch (err) {
         setError("Ett tekniskt fel uppstod.");
@@ -162,6 +152,15 @@ const MembershipCallback = () => {
         </CardContent>
       </Card>
     </div>
+  );
+};
+
+// Main component with Suspense boundary
+const MembershipCallback = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <MembershipVerification />
+    </Suspense>
   );
 };
 

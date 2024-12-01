@@ -29,7 +29,7 @@ const formSchema = z.object({
     ),
 });
 
-const MEMBERSHIP_PRICE = 300; // Set your membership price here
+const MEMBERSHIP_PRICE = 1; // Set your membership price here
 
 export default function Membership({startPage, assetUrl, email}) {
   const [paymentRequest, setPaymentRequest] = useState(null);

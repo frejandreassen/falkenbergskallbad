@@ -67,7 +67,7 @@ const Payment = ({
 
       // Opening Swish on mobile
       if (window.innerWidth < 700) {
-        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.origin}/bokning?paymentId=${newPaymentRequest.id}`;
+        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.origin}/redirect/periodkort?paymentId=${newPaymentRequest.id}`;
       }
 
       let attempts = 0;

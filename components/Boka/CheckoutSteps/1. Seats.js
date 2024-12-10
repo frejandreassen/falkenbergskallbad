@@ -2,7 +2,7 @@ import React from 'react'
 
 const Seats = ({ order, setOrder, selectedSlot, formatSeats, priceList, setCurrentStep, validateOrder }) => {
   const calculateTotalPrice = (seats, isMember) => {
-    if (seats === selectedSlot.available_seats) {
+    if (seats === 10) {
       return isMember ? priceList.memberPriceEntireSauna : priceList.regularPriceEntireSauna;
     } else {
       const pricePerSeat = isMember ? priceList.memberPricePerSeat : priceList.regularPricePerSeat;

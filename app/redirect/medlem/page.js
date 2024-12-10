@@ -92,9 +92,11 @@ const SuccessDisplay = () => (
   </div>
 );
 
+
 const MembershipVerification = () => {
   const [status, setStatus] = useState(null);
   const [error, setError] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -113,7 +115,6 @@ const MembershipVerification = () => {
       try {
         let attempts = 0;
         const maxAttempts = 20;
-        
         const pollInterval = setInterval(async () => {
           if (!isActive) {
             clearInterval(pollInterval);
@@ -121,24 +122,36 @@ const MembershipVerification = () => {
           }
 
           try {
+            if (isProcessing) {
+              return; // Skip this iteration if we're already processing
+            }
+
+            setIsProcessing(true);
             const payment = await getPayment(paymentId);
-            
+
             if (payment.status === "PAID") {
               clearInterval(pollInterval);
               
-              // Check if user is already a member
-              const isMember = await checkMembership(payment.order.email);
-              if (isMember) {
-                if (isActive) {
-                  setStatus("success");
+              try {
+                // Check if user is already a member
+                const isMember = await checkMembership(payment.order.email);
+                
+                if (isMember) {
+                  if (isActive) {
+                    setStatus("success");
+                  }
+                } else {
+                  // Create new member only if they don't exist
+                  await createNewMember(payment.order, payment);
+                  if (isActive) {
+                    setStatus("success");
+                  }
                 }
-                return;
-              }
-
-              // Create new member if not already exists
-              const member = await createNewMember(payment.order, payment);
-              if (isActive) {
-                setStatus("success");
+              } catch (err) {
+                if (isActive) {
+                  setError("Ett fel uppstod vid medlemsregistreringen.");
+                  setStatus("error");
+                }
               }
             } else if (["DECLINED", "ERROR", "CANCELLED"].includes(payment.status)) {
               clearInterval(pollInterval);
@@ -160,6 +173,8 @@ const MembershipVerification = () => {
               setError("Ett fel uppstod vid verifiering av betalningen.");
               setStatus("error");
             }
+          } finally {
+            setIsProcessing(false);
           }
         }, 3000);
 
@@ -193,12 +208,4 @@ const MembershipVerification = () => {
   return <Loader />;
 };
 
-const MembershipCallback = () => {
-  return (
-    <Suspense fallback={<Loader />}>
-      <MembershipVerification />
-    </Suspense>
-  );
-};
-
-export default MembershipCallback;
+export default MembershipVerification;

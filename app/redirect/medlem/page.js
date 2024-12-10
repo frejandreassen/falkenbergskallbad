@@ -93,7 +93,8 @@ const SuccessDisplay = () => (
 );
 
 
-const MembershipVerification = () => {
+// Inner component that uses useSearchParams
+const VerificationContent = () => {
   const [status, setStatus] = useState(null);
   const [error, setError] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -123,7 +124,7 @@ const MembershipVerification = () => {
 
           try {
             if (isProcessing) {
-              return; // Skip this iteration if we're already processing
+              return;
             }
 
             setIsProcessing(true);
@@ -133,7 +134,6 @@ const MembershipVerification = () => {
               clearInterval(pollInterval);
               
               try {
-                // Check if user is already a member
                 const isMember = await checkMembership(payment.order.email);
                 
                 if (isMember) {
@@ -141,7 +141,6 @@ const MembershipVerification = () => {
                     setStatus("success");
                   }
                 } else {
-                  // Create new member only if they don't exist
                   await createNewMember(payment.order, payment);
                   if (isActive) {
                     setStatus("success");
@@ -208,4 +207,13 @@ const MembershipVerification = () => {
   return <Loader />;
 };
 
-export default MembershipVerification;
+// Main component with proper Suspense boundary
+const MembershipCallback = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <VerificationContent />
+    </Suspense>
+  );
+};
+
+export default MembershipCallback;

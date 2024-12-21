@@ -116,7 +116,7 @@ async function updateBookingWithSeamCodeId(bookingId, accessCodeId) {
     console.error('Error updating booking with Seam code ID:', error);
   }
 }
-async function GET() {
+async function POST() {
     try {
       const slots = await fetchBookingsForCodeSetting();
       console.log('Fetched slots for code setting:', slots);
@@ -154,5 +154,5 @@ async function GET() {
   }
 
 module.exports = {
-  GET,
+  POST,
 };

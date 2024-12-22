@@ -122,16 +122,16 @@ async function POST() {
       console.log('Fetched slots for code setting:', slots);
   
       for (const slot of slots) {
-        const startTimeUTC = DateTime.fromISO(slot.start_time, { zone: 'UTC' }).toISO();
-        const endTimeUTC = DateTime.fromISO(slot.end_time, { zone: 'UTC' }).toISO();
+        const startTime = DateTime.fromISO(slot.start_time).setZone('Europe/Stockholm').toISO();
+        const endTime = DateTime.fromISO(slot.end_time).setZone('Europe/Stockholm').toISO();
   
         if (slot.bookings && Array.isArray(slot.bookings)) {
           for (const booking of slot.bookings) {
             if (booking.status === 'cancelled') continue;  //Don't set the code if the booking is cancelled
             const success = await setSeamAccessCode(
               process.env.SEAM_DEVICE_ID || '',
-              startTimeUTC,
-              endTimeUTC,
+              startTime,
+              endTime,
               booking.door_code,
               booking.user.email,
               booking.id

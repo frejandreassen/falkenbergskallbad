@@ -89,7 +89,6 @@ async function setSeamAccessCode(deviceId, startsAt, endsAt, code, name, booking
 
     const data = await response.json();
     console.log(`Successfully created Seam access code ${data.access_code.code} for ${name} (Booking ID: ${bookingId})`);
-    await updateBookingWithSeamCodeId(bookingId, data.access_code.access_code_id);
     return true;
   } catch (error) {
     console.error('Error creating Seam access code:', error);
@@ -97,33 +96,16 @@ async function setSeamAccessCode(deviceId, startsAt, endsAt, code, name, booking
   }
 }
 
-async function updateBookingWithSeamCodeId(bookingId, accessCodeId) {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/bookings/${bookingId}?access_token=${process.env.DIRECTUS_ACCESS_TOKEN}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ access_code_id: accessCodeId }),
-      },
-    );
-    if (!response.ok) {
-      console.error(`Failed to update booking ${bookingId} with Seam code ID: ${response.status} ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error('Error updating booking with Seam code ID:', error);
-  }
-}
+
 async function POST() {
     try {
       const slots = await fetchBookingsForCodeSetting();
       console.log('Fetched slots for code setting:', slots);
   
       for (const slot of slots) {
-        const startTime = DateTime.fromISO(slot.start_time).setZone('Europe/Stockholm').toISO();
-        const endTime = DateTime.fromISO(slot.end_time).setZone('Europe/Stockholm').toISO();
+        const startTime = DateTime.fromISO(slot.start_time, { zone: 'Europe/Stockholm' }).toUTC().toISO();
+        const endTime = DateTime.fromISO(slot.end_time, { zone: 'Europe/Stockholm' }).toUTC().toISO();
+
   
         if (slot.bookings && Array.isArray(slot.bookings)) {
           for (const booking of slot.bookings) {

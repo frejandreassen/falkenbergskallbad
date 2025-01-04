@@ -3,7 +3,8 @@ import React from 'react'
 const Contact = ({ order, setOrder, errors, setCurrentStep, validateOrder }) => {
   const handleOrderChange = (e) => {
     const { name, value } = e.target;
-    setOrder({ ...order, [name]: value });
+    const finalValue = name === 'email' ? value.toLowerCase() : value;
+    setOrder({ ...order, [name]: finalValue });
   };
   const handleContinue = () => {
     if (validateOrder()) {

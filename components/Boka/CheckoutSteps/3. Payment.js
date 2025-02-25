@@ -411,7 +411,7 @@ const Payment = ({
                         {card.expiry_date
                           ? ` Giltigt till: ${format(new Date(card.expiry_date), 'dd MMM yyyy', { locale: sv })}`
                           : ""}
-                        {card.remaining_uses < 30
+                        {card.type = "Klippkort"
                           ? ` - Återstående användningar: ${card.remaining_uses}`
                           : ""}
                       </span>

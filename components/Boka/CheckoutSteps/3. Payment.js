@@ -34,6 +34,7 @@ const Payment = ({
   const [hasAttemptedCardFetch, setHasAttemptedCardFetch] = useState(false);
   const [paymentRequest, setPaymentRequest] = useState(null);
   const [manualQrVisible, setManualQrVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state to track form submission
 
   useEffect(() => {
     const verifyMembership = async () => {
@@ -80,21 +81,42 @@ const Payment = ({
     });
   };
 
+  // Fixed handleBookingUsingCard to prevent multiple submissions
   const handleBookingUsingCard = async () => {
-    const booking = await bookUsingCard(order);
-    console.log(booking);
-    if (!booking.success) {
-      setErrors({ booking: booking.message });
+    // Prevent multiple submissions
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    setIsLoading(true);
+    
+    try {
+      const booking = await bookUsingCard(order);
+      console.log(booking);
+      if (!booking.success) {
+        setErrors({ booking: booking.message });
+        setCurrentStep("error");
+      }
+      if (booking.success) {
+        setErrors({});
+        setCurrentStep("confirmation");
+      }
+    } catch (error) {
+      console.error("Error during card booking:", error);
+      setErrors({ booking: "Ett oväntat fel uppstod" });
       setCurrentStep("error");
-    }
-    if (booking.success) {
-      setErrors({});
-      setCurrentStep("confirmation");
+    } finally {
+      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
   const handleBookingUsingSwish = async () => {
+    // Prevent multiple submissions
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
     setIsLoading(true);
+    
     try {
       const newPaymentRequest = await createTransaction(
         order,
@@ -122,6 +144,7 @@ const Payment = ({
                 payment: `Betalningsförfrågan missslyckades. Status: ${payment.status.toLowerCase()}`,
               });
               setCurrentStep("error");
+              setIsSubmitting(false); // Reset submission state
             } else if (payment.status === "PAID") {
               clearInterval(pollInterval);
               const booking = await bookUsingSwish(payment.order, payment.id);
@@ -133,15 +156,18 @@ const Payment = ({
                 setErrors({ payment: booking.message });
                 setCurrentStep("error");
               }
+              setIsSubmitting(false); // Reset submission state
             } else if (attempts >= maxAttempts) {
               clearInterval(pollInterval);
               setErrors({ payment: "Payment timed out" });
+              setIsSubmitting(false); // Reset submission state
             }
           } catch (error) {
             clearInterval(pollInterval);
             console.error("Payment error:", error.message);
             setErrors({ payment: error.message });
             setCurrentStep("error");
+            setIsSubmitting(false); // Reset submission state
           }
         }, 2000);
       };
@@ -151,6 +177,7 @@ const Payment = ({
       console.error("Error creating payment request:", error);
       setErrors({ payment: "Misslyckades med att skapa betalningsförfrågan" });
       setCurrentStep("error");
+      setIsSubmitting(false); // Reset submission state
     } finally {
       setIsLoading(false);
     }
@@ -269,7 +296,10 @@ const Payment = ({
           </div>
           <button
             onClick={handleBookingUsingSwish}
-            className="flex items-center justify-center px-4 py-3 border bg-white w-full rounded-md shadow-sm text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
+            disabled={isSubmitting}
+            className={`flex items-center justify-center px-4 py-3 border bg-white w-full rounded-md shadow-sm text-sm font-medium border-gray-300 ${
+              isSubmitting ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 hover:bg-gray-50'
+            }`}
           >
             <img src="/swish-logo.svg" alt="Swish" className="h-7" />
           </button>
@@ -416,9 +446,14 @@ const Payment = ({
               <button
                 type="button"
                 onClick={handleBookingUsingCard}
-                className="mt-5 w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                disabled={isSubmitting}
+                className={`mt-5 w-full rounded-md border border-transparent px-4 py-3 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                  isSubmitting 
+                    ? 'bg-indigo-400 cursor-not-allowed' 
+                    : 'bg-indigo-600 hover:bg-indigo-700'
+                }`}
               >
-                Boka
+                {isSubmitting ? 'Bearbetar...' : 'Boka'}
               </button>
             </>
           )}

@@ -72,7 +72,10 @@ export default function BookingDetailsPage({ params }) {
   };
 
   const isCancellationAllowed = () => {
+
     if (!bookingDetails || !bookingDetails.slot.start_time) return false;
+    //If we have set the slot to repayable
+    if (bookingDetails.slot.repayable == true) return true;
     const startTime = new Date(bookingDetails.slot.start_time);
     const now = new Date();
     return isBefore(addHours(now, 24), startTime);

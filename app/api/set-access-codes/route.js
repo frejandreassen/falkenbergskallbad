@@ -15,7 +15,7 @@ async function fetchBookingsForCodeSetting() {
           },
         },
         {
-          start_time: {
+          end_time: {
             _gt: now.toISO(),
           },
         },

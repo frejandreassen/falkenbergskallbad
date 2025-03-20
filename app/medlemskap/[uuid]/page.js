@@ -81,7 +81,7 @@ export default function MembershipDetailsPage({ params }) {
 
       // Opening Swish on mobile
       if (window && window.innerWidth < 700) {
-        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.origin}/redirect/medlem?paymentId=${newPaymentRequest.id}`;
+        window.location = `swish://paymentrequest?token=${newPaymentRequest.token}&callbackurl=${window.location.origin}/redirect/medlemskap?paymentId=${newPaymentRequest.id}&memberId=${membershipDetails.id}&uuid=${uuid}`;
       }
 
       let attempts = 0;
@@ -252,7 +252,7 @@ export default function MembershipDetailsPage({ params }) {
             className="w-full mt-4 flex items-center justify-center px-4 py-3 border bg-white rounded-md shadow-sm text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
           >
             <a
-              href={`swish://paymentrequest?token=${paymentRequest.token}&callbackurl=${window.location.origin}/medlemskap/${uuid}?paymentId=${paymentRequest.id}`}
+              href={`swish://paymentrequest?token=${paymentRequest.token}&callbackurl=${window.location.origin}/redirect/medlemskap?paymentId=${paymentRequest.id}&memberId=${membershipDetails.id}&uuid=${uuid}`}
             >
               Öppna Swish på denna enhet
             </a>

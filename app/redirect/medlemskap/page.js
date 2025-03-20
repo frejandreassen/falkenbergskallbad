@@ -16,6 +16,19 @@ function PaymentHandler() {
     
     if (!paymentId || !memberId || !uuid) {
       setError("Saknade parametrar. Kunde inte verifiera betalning.");
+      console.error("Missing parameters:", { 
+        paymentId: paymentId || "missing", 
+        memberId: memberId || "missing", 
+        uuid: uuid || "missing"
+      });
+      
+      // If we at least have the UUID, provide a link back
+      if (uuid) {
+        setTimeout(() => {
+          router.push(`/medlemskap/${uuid}`);
+        }, 5000);
+        setStatus("Omdirigerar tillbaka till medlemssidan om 5 sekunder...");
+      }
       return;
     }
 

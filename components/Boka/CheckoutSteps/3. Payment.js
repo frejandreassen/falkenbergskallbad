@@ -365,7 +365,7 @@ const Payment = ({
               className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
             />
             <label htmlFor="terms-checkbox" className="ml-3 block text-base font-medium text-gray-800">
-              Jag lovar att ta hand om bastun enligt basturgelerna (<a href="/regler" className="text-indigo-600 font-bold hover:underline">länk</a>)
+              Jag lovar att ta hand om bastun enligt <a href="/basturegler" className="text-indigo-600 font-bold hover:underline">basturgelerna</a>
             </label>
           </div>
         </div>

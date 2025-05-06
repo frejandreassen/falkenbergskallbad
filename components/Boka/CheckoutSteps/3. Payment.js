@@ -36,6 +36,14 @@ const Payment = ({
   const [manualQrVisible, setManualQrVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // New state to track form submission
 
+    // Add state for terms agreement
+    const [termsAgreed, setTermsAgreed] = useState(false);
+    
+    // Handle checkbox change
+    const handleTermsChange = (e) => {
+      setTermsAgreed(e.target.checked);
+    };
+
   useEffect(() => {
     const verifyMembership = async () => {
       if (order.isMember) {
@@ -347,26 +355,59 @@ const Payment = ({
       </div>
 
       {!order.paymentMethod && (
+        <div className="p-4 border border-indigo-200 bg-indigo-50 rounded-md mb-6">
+          <div className="flex items-center">
+            <input
+              id="terms-checkbox"
+              type="checkbox"
+              checked={termsAgreed}
+              onChange={handleTermsChange}
+              className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            />
+            <label htmlFor="terms-checkbox" className="ml-3 block text-base font-medium text-gray-800">
+              Jag lovar att ta hand om bastun enligt basturgelerna (<a href="/regler" className="text-indigo-600 font-bold hover:underline">länk</a>)
+            </label>
+          </div>
+        </div>
+      )}
+
+
+      {!order.paymentMethod && (
         <div className="flex flex-col space-y-4">
           <h3 className="text-lg font-medium text-gray-900">
             Välj betalningsmetod
           </h3>
           <button
             onClick={() => setPaymentMethod("swish")}
-            className="flex items-center justify-center px-4 py-3 border rounded-md shadow-sm text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
+            className={`flex items-center justify-center px-4 py-3 border rounded-md shadow-sm text-sm font-medium border-gray-300 ${
+              termsAgreed 
+                ? "text-gray-700 hover:bg-gray-50" 
+                : "text-gray-400 bg-gray-100 cursor-not-allowed"
+            }`}
+            disabled={!termsAgreed}
           >
             <img src="/swish-logo.svg" alt="Swish" className="h-7" />
           </button>
-            <button
-                onClick={fetchUserCardInfo}
-                className="px-4 py-3 border rounded-md shadow-sm text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
-              >
-                Klippkort
-            </button>
+          <button
+            onClick={fetchUserCardInfo}
+            className={`px-4 py-3 border rounded-md shadow-sm text-sm font-medium border-gray-300 ${
+              termsAgreed 
+                ? "text-gray-700 hover:bg-gray-50" 
+                : "text-gray-400 bg-gray-100 cursor-not-allowed"
+            }`}
+            disabled={!termsAgreed}
+          >
+            Klippkort
+          </button>
           {order.selectedSeats <= 1 && (
             <button
               onClick={fetchUserCardInfo}
-              className="px-4 py-3 border rounded-md shadow-sm text-sm font-medium border-gray-300 text-gray-700 hover:bg-gray-50"
+              className={`px-4 py-3 border rounded-md shadow-sm text-sm font-medium border-gray-300 ${
+                termsAgreed 
+                  ? "text-gray-700 hover:bg-gray-50" 
+                  : "text-gray-400 bg-gray-100 cursor-not-allowed"
+              }`}
+              disabled={!termsAgreed}
             >
               Årskort
             </button>

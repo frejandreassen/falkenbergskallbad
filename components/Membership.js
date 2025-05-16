@@ -372,7 +372,7 @@ export default function Membership({startPage, assetUrl, email}) {
                 />
               </div>
               {renderContent()}
-              <p className="mt-4 text-xs">Om du istället vill betala med bankgiro: betala 300 kronor till bankgiro 145-4636, märk betalningen med ditt namn. Maila även telefon och namn till falkenbergskallbad@gmail.com</p>
+              <p className="mt-4 text-xs">{startPage.membership_alternative_payment_text}</p>
             </form>
           </Form>
 
